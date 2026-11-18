@@ -129,6 +129,11 @@ const listeningTracks = {
     source: 'audio/youngboguk.mp3',
     title: '영보국 정정지법',
     description: '말씀에 귀 기울이고, 마음에 와닿는 구절에 잠시 머물러보세요.'
+  },
+  dogong: {
+    source: '',
+    title: '도공수행 체험',
+    description: '음악에 몸을 맡기고 편안하게 움직이는 역동 명상입니다. 좋고 나쁨을 판단하지 말고, 몸의 흐름에 그대로 맡겨보세요.'
   }
 };
 function openListening(key) {
@@ -136,13 +141,14 @@ function openListening(key) {
   music.pause();
   stopChant();
   listeningAudio.pause();
-  listeningAudio.src = track.source;
+  if (track.source) { listeningAudio.src = track.source; } else { listeningAudio.removeAttribute('src'); }
   document.getElementById('listeningTitle').textContent = track.title;
   document.getElementById('listeningDescription').textContent = track.description;
   document.getElementById('listeningWords').hidden = key !== 'chant';
-  listeningStatus.textContent = '음원을 준비하고 있어요.';
+  document.getElementById('listeningGuide').hidden = key !== 'dogong';
+  listeningStatus.textContent = track.source ? '음원을 준비하고 있어요.' : '도공음악 파일을 선택해 주세요.';
   listening.showModal();
-  listeningAudio.play().catch(() => {
+  if (track.source) listeningAudio.play().catch(() => {
     listeningStatus.textContent = '재생 버튼을 눌러 주세요. 재생되지 않으면 연결 상태를 확인해 주세요.';
   });
 }
@@ -151,5 +157,16 @@ listeningAudio.onended = () => { listeningStatus.textContent = '음원을 끝까
 listeningAudio.onerror = () => { listeningStatus.textContent = '음원을 불러오지 못했어요. 연결 상태를 확인하고 다시 열어 주세요.'; };
 listening.addEventListener('close', () => listeningAudio.pause());
 document.getElementById('listeningClose').onclick = () => listening.close();
+document.getElementById('dogongOpen').onclick = () => openListening('dogong');
+document.getElementById('listeningFile').onchange = event => {
+  const file = event.target.files[0];
+  if (!file) return;
+  listeningAudio.pause();
+  listeningAudio.src = URL.createObjectURL(file);
+  listeningStatus.textContent = file.name + ' · 준비되었어요. 재생 버튼을 눌러 주세요.';
+  listeningAudio.play().catch(() => {
+    listeningStatus.textContent = '재생 버튼을 눌러 주세요. 재생되지 않으면 연결 상태를 확인해 주세요.'
+  });
+};
 document.getElementById('chantTrackOpen').onclick = () => openListening('chant');
 document.getElementById('wisdomOpen').onclick = () => openListening('wisdom');
