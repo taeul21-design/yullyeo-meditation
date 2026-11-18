@@ -131,9 +131,9 @@ const listeningTracks = {
     description: '말씀에 귀 기울이고, 마음에 와닿는 구절에 잠시 머물러보세요.'
   },
   dogong: {
-    source: '',
+    source: 'audio/dogong.mp3',
     title: '도공수행 체험',
-    description: '음악에 몸을 맡기고 편안하게 움직이는 역동 명상입니다. 좋고 나쁨을 판단하지 말고, 몸의 흐름에 그대로 맡겨보세요.'
+    description: '음악에 몸을 맡기고 편안하게 움직이는 역동 명상입니다. 판단을 내려놓고 흐름에 맡기면, 몸이 원하는 움직임이 저절로 펼쳐져요.'
   }
 };
 function openListening(key) {
@@ -158,6 +158,23 @@ listeningAudio.onerror = () => { listeningStatus.textContent = '음원을 불러
 listening.addEventListener('close', () => listeningAudio.pause());
 document.getElementById('listeningClose').onclick = () => listening.close();
 document.getElementById('dogongOpen').onclick = () => openListening('dogong');
+document.querySelectorAll('#dogongTracks [data-dogong]').forEach(button => button.onclick = () => {
+  listeningAudio.pause();
+  listeningAudio.src = button.dataset.dogong;
+  document.getElementById('listeningFile').value = '';
+  document.querySelectorAll('#dogongTracks [data-dogong]').forEach(b => { b.classList.toggle('selected', b === button); b.setAttribute('aria-pressed', String(b === button)); });
+  listeningAudio.play().catch(() => { listeningStatus.textContent = '\uc7ac\uc0dd \ubc84\ud2bc\uc744 \ub20c\ub7ec \uc8fc\uc138\uc694.'; });
+});
+document.getElementById('dogongToSession').onclick = () => {
+  if (!listeningAudio.src) { listeningStatus.textContent = '먼저 도공음악 파일을 선택해 주세요.'; return; }
+  music.pause();
+  music.src = listeningAudio.src;
+  document.getElementById('musicFile').value = '';
+  music.load();
+  musicStatus.textContent = '도공음악 · 명상을 시작하면 이 음악이 재생됩니다.';
+  listening.close();
+  window.scrollTo(0, 0);
+};
 document.getElementById('listeningFile').onchange = event => {
   const file = event.target.files[0];
   if (!file) return;

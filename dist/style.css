@@ -9,3 +9,16 @@ header{padding-top:env(safe-area-inset-top)}button{min-height:44px}dialog{max-he
 details{margin:18px 0;padding:12px 0;border-bottom:1px solid #ffffff22}summary{cursor:pointer;padding:8px 0}label{display:block;line-height:1.8}input,select{max-width:100%;margin:10px 0;font:inherit}select{padding:10px;background:#101e27;color:var(--ink)}audio{width:100%;margin-top:12px}.chant-text{white-space:pre-line;font-size:22px;line-height:1.9;color:var(--ink)}#chantCount{font-size:24px;color:var(--gold)}button:disabled{opacity:.5;cursor:default}
 
 .smallcards .practice-icon{font-size:28px;color:var(--gold);margin-bottom:10px}#listeningWords p{font-size:18px;line-height:1.9}#listeningAudio{min-height:54px}
+
+/* --- 저녁 수면 명상: 어두운 화면 --- */
+body.night-mode{background:#0a1118;color:#e8eef2;}
+body.night-mode main{background:#0a1118;}
+body.night-mode header,body.night-mode section,body.night-mode .panel,body.night-mode .smallcards button,body.night-mode nav{background-color:#101b26 !important;color:#e8eef2;}
+body.night-mode h1,body.night-mode h2,body.night-mode h3,body.night-mode p,body.night-mode small,body.night-mode span{color:#e8eef2;}
+body.night-mode .eyebrow,body.night-mode .muted,body.night-mode .text{color:#9fb3c0 !important;}
+body.night-mode .durations button{border-color:#2a4157;color:#9fb3c0;}
+body.night-mode .durations .selected{border-color:var(--gold);color:var(--gold);}
+body.night-mode .orb{color:#c6d8e8;text-shadow:0 0 70px #9db8d877;}
+body.night-mode #clock{color:#e8eef2;}
+body.night-mode button.primary{background:#2a4157;color:#e8eef2;}
+body.night-mode dialog{background:#0e1822;border-color:#2a4157;}
