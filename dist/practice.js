@@ -17,6 +17,16 @@ document.getElementById('musicFile').onchange = event => {
   musicStatus.textContent = file.name + ' · 명상을 시작하면 재생됩니다.';
 };
 music.onerror = () => { musicStatus.textContent = '재생할 수 없는 음원입니다. MP3 또는 M4A 파일을 선택해 주세요.'; };
+const musicButtons = document.querySelectorAll('#musicList [data-track]');
+musicButtons.forEach(button => button.onclick = () => {
+  music.pause();
+  if (musicUrl) { URL.revokeObjectURL(musicUrl); musicUrl = undefined; }
+  document.getElementById('musicFile').value = '';
+  music.src = button.dataset.track;
+  musicButtons.forEach(b => { b.classList.toggle('selected', b === button); b.setAttribute('aria-pressed', String(b === button)); });
+  musicStatus.textContent = '명상음악(' + button.textContent + ') · 명상을 시작하면 재생됩니다.';
+  music.load();
+});
 const learn = document.getElementById('learn');
 document.getElementById('learnOpen').onclick = () => learn.showModal();
 document.getElementById('learnClose').onclick = () => learn.close();
